@@ -1,0 +1,36 @@
+---
+name: itemfit
+title: Item Fit Analysis
+menuGroup: easyRaschJamovi
+version: '1.0.0'
+jas: '1.2'
+
+options:
+    - name: data
+      type: Data
+
+    - name: vars
+      title: Items
+      type: Variables
+      suggested:
+          - continuous
+          - nominal
+          - ordinal
+      permitted:
+          - numeric
+
+    - name: iterations
+      title: Iterations
+      type: Integer
+      min: 50
+      max: 1000
+      default: 150
+
+    - name: cores
+      title: CPU Cores
+      type: Integer
+      min: 1
+      max: 16
+      default: 4
+
+...

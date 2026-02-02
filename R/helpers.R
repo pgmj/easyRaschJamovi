@@ -127,6 +127,23 @@ RIitemparams <- function(dfin, fontsize = 15, output = "dataframe",
 
 }
 
+RIestThetas <- function(data) {
+  # Estimate person parameters using WLE for dichotomous Rasch model data
+  if (min(as.matrix(data), na.rm = T) > 0) {
+    stop("The lowest response category needs to coded as 0. Please recode your data.")
+  }
+  
+  if (max(as.matrix(data), na.rm = T) != 1) {
+    stop("RIestThetas is only for dichotomous data. Use RIestThetasOLD for polytomous data.")
+  }
+  
+  df.erm <- eRm::RM(data)
+  person_params <- eRm::person.parameter(df.erm)
+  
+  # Return a list with WLE values
+  list(WLE = person_params[["theta.table"]][["Person Parameter"]])
+}
+
 RIestThetasOLD <- function(data, itemParams, method = "WL",
                            theta_range = c(-10,10)) {
 
