@@ -14,6 +14,7 @@ rescorClass <- R6::R6Class(
             vars <- self$options$vars
             iterations <- self$options$iterations
             cores <- self$options$cores
+            seed <- self$options$seed
             
             # Select only the specified variables
             df <- data[, vars]
@@ -26,7 +27,7 @@ rescorClass <- R6::R6Class(
             # Run the analysis
             tryCatch({
                 # Get residual correlation cutoff
-                rescor <- RIgetResidCor(df, iterations = iterations, cpu = cores)
+                rescor <- RIgetResidCor(df, iterations = iterations, cpu = cores, seed = seed)
                 
                 # Get the correlation matrix as HTML
                 resid_table <- RIresidcorr(df, rescor)

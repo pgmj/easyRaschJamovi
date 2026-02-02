@@ -24,8 +24,9 @@
 #' @param iterations Number of simulation iterations (use 200-400)
 #' @param cpu Number of CPU cores to use
 #' @param na.omit Defaults to TRUE to produce conditional fit comparable values
+#' @param seed Optional random seed for reproducibility (default NULL)
 #' @export
-RIgetfit <- function(data, iterations = 150, cpu = 4, na.omit = TRUE) {
+RIgetfit <- function(data, iterations = 150, cpu = 4, na.omit = TRUE, seed = NULL) {
   # since we want comparable values to conditional item fit, which only uses
   # complete cases, we remove any missing responses by default
   if (na.omit == TRUE) {
@@ -33,11 +34,18 @@ RIgetfit <- function(data, iterations = 150, cpu = 4, na.omit = TRUE) {
   }
   sample_n <- nrow(data)
 
-  # get vector of random seeds for reproducible simulations
-  seeds <- c(.Random.seed, as.integer(.Random.seed + 1))
-  if (iterations > length(seeds)) {
-    stop(paste0("Maximum possible iterations is ",length(seeds),"."))
+  # set seed if provided
+  if (!is.null(seed)) {
+    set.seed(seed)
+  } else {
+    # ensure .Random.seed exists
+    if (!exists(".Random.seed", envir = .GlobalEnv)) {
+      runif(1)
+    }
   }
+  
+  # generate vector of random seeds for reproducible simulations
+  seeds <- sample.int(.Machine$integer.max, iterations)
 
   registerDoParallel(cores = cpu)
 

@@ -33,4 +33,9 @@ options:
       max: 16
       default: 4
 
+    - name: seed
+      title: Random Seed
+      type: Integer
+      default: 1234
+
 ...
