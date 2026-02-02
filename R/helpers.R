@@ -11,17 +11,13 @@
 #' @import purrr
 #' @import catR
 #' @import psychotools
-#' @import readxl
-#' @import readr
 #' @import matrixStats
 #' @import knitr
 #' @import doFuture
-#' @importFrom magrittr %>%
-#' @importFrom doParallel registerDoParallel
-#' @importFrom foreach foreach
-#' @importFrom foreach %dopar%
-#' @importFrom doFuture %dofuture%
-#' @importFrom doFuture registerDoFuture
+#' @import magrittr 
+#' @import doParallel 
+#' @import foreach 
+#' @import doFuture 
 NULL
 
 options(rgl.useNULL = TRUE)
