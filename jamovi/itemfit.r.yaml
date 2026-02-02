@@ -15,7 +15,6 @@ items:
           - name: infitmsq
             title: InfitMSQ
             type: number
-            format: zto,pvalue
           - name: location
             title: Relative location
             type: number

@@ -9,4 +9,4 @@ export(RIresidcorr)
 export(RIitemparams)
 export(RIcheckdata)
 
-importFrom(jmvcore, analysis)
+importFrom(jmvcore, Analysis)

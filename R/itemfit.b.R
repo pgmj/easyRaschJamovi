@@ -36,6 +36,7 @@ itemfitClass <- R6::R6Class(
                         mean(na.rm = TRUE)
                     relative_item_avg_locations <- item_avg_locations - person_avg_locations
                 } else if(max(as.matrix(df), na.rm = TRUE) > 1) {
+                    # For polytomous data, use PCM and RIestThetasOLD (catR-based estimation)
                     erm_out <- eRm::PCM(df)
                     item_avg_locations <- RIitemparams(df, output = "dataframe") %>%
                         pull(Location)

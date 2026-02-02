@@ -128,9 +128,13 @@ RIitemparams <- function(dfin, fontsize = 15, output = "dataframe",
 }
 
 RIestThetas <- function(data) {
-  # Estimate person parameters using WLE for dichotomous data
+  # Estimate person parameters using WLE for dichotomous Rasch model data
   if (min(as.matrix(data), na.rm = T) > 0) {
     stop("The lowest response category needs to coded as 0. Please recode your data.")
+  }
+  
+  if (max(as.matrix(data), na.rm = T) != 1) {
+    stop("RIestThetas is only for dichotomous data. Use RIestThetasOLD for polytomous data.")
   }
   
   df.erm <- eRm::RM(data)
