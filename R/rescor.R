@@ -57,7 +57,7 @@ RIgetResidCor <- function(data, iterations = 150, cpu = 4, seed = NULL) {
 
     # create object to store results from multicore loop
     residcor <- list()
-    residcor <- foreach(icount(iterations),
+    residcor <- foreach(i = 1:iterations,
       .options.future = list(seed = TRUE)
     ) %dofuture% {
       # resampled vector of theta values (based on sample properties)
@@ -120,7 +120,7 @@ RIgetResidCor <- function(data, iterations = 150, cpu = 4, seed = NULL) {
 
     # create object to store results from multicore loop
     residcor <- list()
-    residcor <- foreach(icount(iterations)) %dopar% {
+    residcor <- foreach(i = 1:iterations) %dopar% {
       # resample vector of theta values (based on sample properties)
       inputThetas <- sample(thetas, size = sample_n, replace = TRUE)
 
