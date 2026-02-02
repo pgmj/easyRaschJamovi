@@ -1,0 +1,26 @@
+---
+name: itemfit
+title: Item Fit Analysis
+jrs: '1.1'
+
+items:
+    - name: fitTable
+      title: Item Fit Statistics
+      type: Table
+      rows: (vars)
+      columns:
+        - name: item
+          title: Item
+          type: text
+        - name: infitmsq
+          title: InfitMSQ
+          type: number
+          format: zto,pvalue
+        - name: location
+          title: Relative location
+          type: number
+        - name: thresholds
+          title: Thresholds
+          type: text
+
+...

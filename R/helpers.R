@@ -127,6 +127,19 @@ RIitemparams <- function(dfin, fontsize = 15, output = "dataframe",
 
 }
 
+RIestThetas <- function(data) {
+  # Estimate person parameters using WLE for dichotomous data
+  if (min(as.matrix(data), na.rm = T) > 0) {
+    stop("The lowest response category needs to coded as 0. Please recode your data.")
+  }
+  
+  df.erm <- eRm::RM(data)
+  person_params <- eRm::person.parameter(df.erm)
+  
+  # Return a list with WLE values
+  list(WLE = person_params[["theta.table"]][["Person Parameter"]])
+}
+
 RIestThetasOLD <- function(data, itemParams, method = "WL",
                            theta_range = c(-10,10)) {
 

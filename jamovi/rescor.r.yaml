@@ -1,0 +1,11 @@
+---
+name: rescor
+title: Residual Correlations
+jrs: '1.1'
+
+items:
+    - name: residcorr
+      title: Residual Correlation Matrix
+      type: Html
+
+...

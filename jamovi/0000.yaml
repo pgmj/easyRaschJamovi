@@ -1,0 +1,28 @@
+---
+name: easyRaschJamovi
+title: Easy Rasch Analysis
+version: 0.1.0
+jms: '1.0'
+authors:
+  - Magnus Johansson
+maintainer: Magnus Johansson <magnus.p.johansson@ri.se>
+date: '2026-02-02'
+type: R
+description: >
+  Provides Rasch analysis functions for Jamovi, including item fit statistics
+  and residual correlations using simulation-based methods.
+analyses:
+  - title: Item Fit Analysis
+    name: itemfit
+    ns: easyRaschJamovi
+    menuGroup: easyRaschJamovi
+    menuTitle: Item Fit Analysis
+  - title: Residual Correlations
+    name: rescor
+    ns: easyRaschJamovi
+    menuGroup: easyRaschJamovi
+    menuTitle: Residual Correlations
+usesNative: false
+minApp: 1.0.8
+
+...
