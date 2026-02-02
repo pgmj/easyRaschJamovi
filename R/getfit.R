@@ -39,7 +39,7 @@ RIgetfit <- function(data, iterations = 150, cpu = 4, na.omit = TRUE, seed = NUL
     set.seed(seed)
   } else {
     # ensure .Random.seed exists
-    if (!exists(".Random.seed", envir = .GlobalEnv)) {
+    if (!exists(".Random.seed")) {
       runif(1)
     }
   }
