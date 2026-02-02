@@ -18,7 +18,7 @@
 #' @param iterations Number of simulation iterations (needed)
 #' @param cpu Number of CPU cores to use (4 is default)
 #' @export
-RIgetResidCor <- function(data, iterations = 250, cpu = 4) {
+RIgetResidCor <- function(data, iterations = 150, cpu = 4) {
   # get sample size
   sample_n <- nrow(data)
 
@@ -214,12 +214,12 @@ RIresidcorr <- function(data, cutoff) {
 
   resid <- resid %>%
     mutate_if(is.character, as.numeric) %>%
-    mutate(across(everything(), ~ round(.x, 2)))
+    mutate(across(everything(), ~ round(.x, 3)))
 
   resid[upper.tri(resid)] <- "" # remove values in upper right triangle to clean up table
   diag(resid) <- "" # same for diagonal
 
-  knitr::kable(resid, caption = paste0("Cutoff = ", round(cutoff_used,3),
+  knitr::kable(resid, caption = paste0("Cutoff = ", round(cutoff_used,4),
                                        ", based on ",iter," simulations.")
                )
 }

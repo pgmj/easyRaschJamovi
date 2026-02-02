@@ -1,6 +1,8 @@
+# manually load functions to test them locally
 source("R/helpers.R")
 source("R/rescor.R")
 source("R/getfit.R")
+source("R/wrapper.R")
 
 # test underlying functions for item fit
 gf <- RIgetfit(pcmdat2)

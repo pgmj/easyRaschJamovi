@@ -14,9 +14,9 @@ library(readxl)
 library(readr)
 library(matrixStats)
 library(knitr)
-registerDoParallel(cores = 4)
+#registerDoParallel(cores = 4)
 library(doFuture, quietly = TRUE)
-registerDoFuture()
+#registerDoFuture()
 
 RIcheckdata <- function(data, n = 3) {
 
