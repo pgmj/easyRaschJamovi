@@ -13,11 +13,11 @@ options:
       title: Items
       type: Variables
       suggested:
-        - continuous
-        - nominal
-        - ordinal
+          - continuous
+          - nominal
+          - ordinal
       permitted:
-        - numeric
+          - numeric
 
     - name: iterations
       title: Iterations

@@ -25,9 +25,27 @@ itemfitClass <- R6::R6Class(
             
             # Run the analysis
             tryCatch({
-                # Get fit statistics
+                # Get fit statistics using simulations
                 gf <- RIgetfit(df, iterations = iterations, cpu = cores)
-                fit_results <- RIitemfit(df, gf)
+                
+                # Get item fit table (recreate logic from RIitemfit without kable output)
+                if(max(as.matrix(df), na.rm = TRUE) == 1) {
+                    erm_out <- eRm::RM(df)
+                    item_avg_locations <- coef(erm_out, "beta") * -1
+                    person_avg_locations <- eRm::person.parameter(erm_out)[["theta.table"]][["Person Parameter"]] %>%
+                        mean(na.rm = TRUE)
+                    relative_item_avg_locations <- item_avg_locations - person_avg_locations
+                } else if(max(as.matrix(df), na.rm = TRUE) > 1) {
+                    erm_out <- eRm::PCM(df)
+                    item_avg_locations <- RIitemparams(df, output = "dataframe") %>%
+                        pull(Location)
+                    person_avg_locations <- RIestThetasOLD(df) %>%
+                        mean(na.rm = TRUE)
+                    relative_item_avg_locations <- item_avg_locations - person_avg_locations
+                }
+                
+                # Get conditional MSQ
+                cfit <- iarm::out_infit(erm_out)
                 
                 # Get item parameters for thresholds
                 item_params <- RIitemparams(df, output = "dataframe")
@@ -40,10 +58,10 @@ itemfitClass <- R6::R6Class(
                     item_name <- vars[i]
                     
                     # Get infit MSQ value
-                    infitmsq <- fit_results[fit_results$Item == item_name, "InfitMSQ"]
+                    infitmsq <- round(cfit$Infit[i], 3)
                     
                     # Get relative location
-                    location <- fit_results[fit_results$Item == item_name, "Relative location"]
+                    location <- round(relative_item_avg_locations[i], 2)
                     
                     # Get thresholds as text
                     threshold_cols <- grep("^Threshold", names(item_params), value = TRUE)
