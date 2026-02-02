@@ -17,8 +17,14 @@
 #' @param data Dataframe with response data
 #' @param iterations Number of simulation iterations (needed)
 #' @param cpu Number of CPU cores to use (4 is default)
+#' @param seed Optional random seed for reproducibility (default NULL)
 #' @export
-RIgetResidCor <- function(data, iterations = 150, cpu = 4) {
+RIgetResidCor <- function(data, iterations = 150, cpu = 4, seed = NULL) {
+  # set seed if provided
+  if (!is.null(seed)) {
+    set.seed(seed)
+  }
+  
   # get sample size
   sample_n <- nrow(data)
 

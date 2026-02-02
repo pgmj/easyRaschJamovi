@@ -14,6 +14,7 @@ itemfitClass <- R6::R6Class(
             vars <- self$options$vars
             iterations <- self$options$iterations
             cores <- self$options$cores
+            seed <- self$options$seed
             
             # Select only the specified variables
             df <- data[, vars]
@@ -26,7 +27,7 @@ itemfitClass <- R6::R6Class(
             # Run the analysis
             tryCatch({
                 # Get fit statistics using simulations
-                gf <- RIgetfit(df, iterations = iterations, cpu = cores)
+                gf <- RIgetfit(df, iterations = iterations, cpu = cores, seed = seed)
                 
                 # Get item fit table (recreate logic from RIitemfit without kable output)
                 if(max(as.matrix(df), na.rm = TRUE) == 1) {
