@@ -1,22 +1,30 @@
+#' Helper functions for easyRaschJamovi
+#'
+#' @import iarm
+#' @import eRm
+#' @import mirt
+#' @import dplyr
+#' @import tidyr
+#' @import tibble
+#' @import janitor
+#' @import doParallel
+#' @import purrr
+#' @import catR
+#' @import psychotools
+#' @import readxl
+#' @import readr
+#' @import matrixStats
+#' @import knitr
+#' @import doFuture
+#' @importFrom magrittr %>%
+#' @importFrom doParallel registerDoParallel
+#' @importFrom foreach foreach
+#' @importFrom foreach %dopar%
+#' @importFrom doFuture %dofuture%
+#' @importFrom doFuture registerDoFuture
+NULL
+
 options(rgl.useNULL = TRUE)
-library(iarm)
-library(eRm)
-library(mirt)
-library(dplyr)
-library(tidyr)
-library(tibble)
-library(janitor)
-library(doParallel)
-library(purrr)
-library(catR)
-library(psychotools)
-library(readxl)
-library(readr)
-library(matrixStats)
-library(knitr)
-#registerDoParallel(cores = 4)
-library(doFuture, quietly = TRUE)
-#registerDoFuture()
 
 RIcheckdata <- function(data, n = 3) {
 
