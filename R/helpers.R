@@ -13,7 +13,6 @@
 #' @import psychotools
 #' @import matrixStats
 #' @import knitr
-#' @import doFuture
 #' @import magrittr 
 #' @import doParallel 
 #' @import foreach 
