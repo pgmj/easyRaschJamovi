@@ -25,22 +25,22 @@
 #' @param cpu Number of CPU cores to use
 #' @param na.omit Defaults to TRUE to produce conditional fit comparable values
 #' @export
-RIgetfit <- function(data, iterations = 250, cpu = 4, na.omit = TRUE) {
+RIgetfit <- function(data, iterations = 150, cpu = 4, na.omit = TRUE) {
   # since we want comparable values to conditional item fit, which only uses
   # complete cases, we remove any missing responses by default
   if (na.omit == TRUE) {
     data <- na.omit(data)
   }
   sample_n <- nrow(data)
-  
+
   # get vector of random seeds for reproducible simulations
   seeds <- c(.Random.seed, as.integer(.Random.seed + 1))
   if (iterations > length(seeds)) {
     stop(paste0("Maximum possible iterations is ",length(seeds),"."))
   }
-  
+
   registerDoParallel(cores = cpu)
-  
+
   if (min(as.matrix(data), na.rm = T) > 0) {
     stop("The lowest response category needs to coded as 0. Please recode your data.")
   } else if (max(as.matrix(data), na.rm = T) == 1 && min(as.matrix(data), na.rm = T) == 0) {
@@ -48,7 +48,7 @@ RIgetfit <- function(data, iterations = 250, cpu = 4, na.omit = TRUE) {
     erm_out <- eRm::RM(data)
     item_locations <- erm_out$betapar * -1
     names(item_locations) <- names(data)
-    
+
     # estimate theta values from data using WLE
     if (na.omit == TRUE) {
       thetas <- RIestThetas(data)$WLE
@@ -56,7 +56,7 @@ RIgetfit <- function(data, iterations = 250, cpu = 4, na.omit = TRUE) {
       mirt_out <- mirt(data, itemtype = "Rasch", verbose = FALSE)
       thetas <- mirt::fscores(mirt_out, method = "WLE", verbose = FALSE)
     }
-    
+
     fitstats <- list()
     #registerDoRNG(seeds[17])
     fitstats <- foreach(i = 1:iterations) %dopar% {
@@ -64,12 +64,12 @@ RIgetfit <- function(data, iterations = 250, cpu = 4, na.omit = TRUE) {
       set.seed(seeds[i])
       # resampled vector of theta values (based on sample properties)
       inputThetas <- sample(thetas, size = sample_n, replace = TRUE)
-      
+
       # simulate response data based on thetas and items above
       testData <-
         psychotools::rrm(inputThetas, item_locations, return_setting = FALSE) %>%
         as.data.frame()
-      
+
       # TEMPORARY FIX START
       # check that all items have at least 8 positive responses, otherwise eRm::RM() fails
       n_resp <-
@@ -78,16 +78,16 @@ RIgetfit <- function(data, iterations = 250, cpu = 4, na.omit = TRUE) {
         colSums2() %>%
         t() %>%
         as.vector()
-      
+
       if (min(n_resp, na.rm = TRUE) < 8) {
         return("Missing cells in generated data.")
       }
       # END TEMP FIX
-      
+
       # get conditional MSQ
       rm_out <- eRm::RM(testData, se = FALSE)
       cfit <- iarm::out_infit(rm_out)
-      
+
       # create dataframe
       item.fit.table <- data.frame(
         InfitMSQ = cfit$Infit,
@@ -102,41 +102,41 @@ RIgetfit <- function(data, iterations = 250, cpu = 4, na.omit = TRUE) {
       dplyr::select(!Location) %>%
       janitor::clean_names() %>%
       as.matrix()
-    
+
     n_items <- nrow(item_locations)
-    
+
     # item threshold locations in list format for simulation function
     itemlist <- list()
     for (i in 1:n_items) {
       itemlist[[i]] <- list(na.omit(item_locations[i, ]))
     }
-    
+
     # get number of response categories for each item for later use in checking complete responses
     itemlength <- list()
     for (i in 1:n_items) {
       itemlength[i] <- length(na.omit(item_locations[i, ]))
       names(itemlength)[i] <- names(data)[i]
     }
-    
+
     # estimate theta values from data using WLE
     thetas <- RIestThetasOLD(data)
-    
+
     fitstats <- list()
     fitstats <- foreach(i = 1:iterations) %dopar% {
       # reproducible seed
       set.seed(seeds[i])
       # resampled vector of theta values (based on sample properties)
       inputThetas <- sample(thetas, size = sample_n, replace = TRUE)
-      
+
       # simulate response data based on thetas and items above
       testData <- SimPartialScore(
         deltaslist = itemlist,
         thetavec = inputThetas
       ) %>%
         as.data.frame()
-      
+
       names(testData) <- names(data)
-      
+
       # check that data has responses in all categories
       data_check <- testData %>%
         # make factor to not drop any consecutive response categories with 0 responses
@@ -152,22 +152,22 @@ RIgetfit <- function(data, iterations = 250, cpu = 4, na.omit = TRUE) {
         mutate(across(everything(), ~ car::recode(.x, "0=NA", as.factor = FALSE))) %>%
         as.data.frame() %>%
         dplyr::select(all_of(names(data))) # get item sorting correct
-      
+
       # match response data generated with itemlength
       item_ccount <- list()
       for (i in 1:n_items) {
         item_ccount[i] <- list(data_check[c(1:itemlength[[i]]), i])
       }
-      
+
       # check if any item has 0 responses in a response category that should have data
       if (any(is.na(unlist(item_ccount)))) {
         return("Missing cells in generated data.")
       }
-      
+
       # get conditional MSQ
       pcm_out <- psychotools::pcmodel(testData, hessian = FALSE)
       cfit <- iarm::out_infit(pcm_out)
-      
+
       # create dataframe
       item.fit.table <- data.frame(
         InfitMSQ = cfit$Infit,
@@ -177,10 +177,10 @@ RIgetfit <- function(data, iterations = 250, cpu = 4, na.omit = TRUE) {
         rownames_to_column("Item")
     }
   }
-  
+
   fitstats$sample_n <- sample_n
   fitstats$sample_summary <- summary(thetas)
-  
+
   return(fitstats)
 }
 
@@ -210,10 +210,9 @@ RIgetfit <- function(data, iterations = 250, cpu = 4, na.omit = TRUE) {
 #' @param output Optional "dataframe" or "quarto"
 #' @param sort Optional "infit"
 #' @param cutoff Default `c(.001,.999)`
-#' @param ... Options passed on to `kbl_rise()` for table creation
 #' @export
-RIitemfit <- function(data, simcut, output = "table", sort = "items", cutoff = c(.001,.999), ...) {
-  
+RIitemfit <- function(data, simcut, sort = "items", cutoff = c(.001,.999)) {
+
   if(min(as.matrix(data), na.rm = T) > 0) {
     stop("The lowest response category needs to coded as 0. Please recode your data.")
   } else if(na.omit(data) %>% nrow() == 0) {
@@ -232,28 +231,28 @@ RIitemfit <- function(data, simcut, output = "table", sort = "items", cutoff = c
       mean(na.rm = TRUE)
     relative_item_avg_locations <- item_avg_locations - person_avg_locations
   }
-  
+
   # get conditional MSQ
   cfit <- iarm::out_infit(erm_out)
   # get count of complete cases
   n_complete <- nrow(na.omit(data))
-  
+
   # create dataframe
   item.fit.table <- data.frame(InfitMSQ = cfit$Infit) %>%
     round(3) %>%
     rownames_to_column("Item") %>%
     add_column(`Relative location` = round(relative_item_avg_locations,2))
-  
+
   if (!missing(simcut)) {
-    
+
     # get number of iterations used to get simulation based cutoff values
     iterations <- length(simcut) - 2
-    
+
     nodata <- lapply(simcut, is.character) %>% unlist()
     iterations_nodata <- which(nodata)
-    
+
     actual_iterations <- iterations - length(iterations_nodata)
-    
+
     # summarise simulations and set cutoff values
     if (actual_iterations == iterations) {
       lo_hi <-
@@ -270,9 +269,9 @@ RIitemfit <- function(data, simcut, output = "table", sort = "items", cutoff = c
                   max_infit_msq = quantile(InfitMSQ, cutoff[2])
         )
     }
-    
+
     lo_hi$Item <- names(data)
-    
+
     # get upper/lower values into a dataframe
     if (actual_iterations == iterations) {
       fit_table <-
@@ -299,64 +298,18 @@ RIitemfit <- function(data, simcut, output = "table", sort = "items", cutoff = c
       mutate(`Infit diff` = ifelse(yes = "no misfit", no = `Infit diff`, InfitMSQ > min_infit_msq & InfitMSQ < max_infit_msq)) %>%
       dplyr::select(!contains(c("lo","hi","min","max"))) %>%
       add_column(`Relative location` = round(relative_item_avg_locations,2))
-    
-    if (output == "table" & sort == "items") {
-      # set conditional highlighting based on cutoffs
-      for (i in 1:nrow(lo_hi)) {
-        
-        item.fit.table[i,"InfitMSQ"] <- cell_spec(item.fit.table[i,"InfitMSQ"],
-                                                  color = ifelse(item.fit.table[i,"InfitMSQ"] < lo_hi[i,"min_infit_msq"], "red",
-                                                                 ifelse(item.fit.table[i,"InfitMSQ"] > lo_hi[i,"max_infit_msq"], "red", "black")))
-      }
-      
+
+    if (sort == "items") {
       # output table
       item.fit.table %>%
-        kbl_rise(...) %>%
-        kableExtra::footnote(general = paste0("MSQ values based on conditional calculations (n = ", n_complete," complete cases).
-                                Simulation based thresholds from ", actual_iterations," simulated datasets."))
-      
-    } else if (output == "table" & sort == "infit") {
-      for (i in 1:nrow(lo_hi)) {
-        
-        item.fit.table[i,"InfitMSQ"] <- cell_spec(item.fit.table[i,"InfitMSQ"],
-                                                  color = ifelse(item.fit.table[i,"InfitMSQ"] < lo_hi[i,"min_infit_msq"], "red",
-                                                                 ifelse(item.fit.table[i,"InfitMSQ"] > lo_hi[i,"max_infit_msq"], "red", "black")))
-      }
-      
+        knitr::kable(caption = paste0("Based on ",actual_iterations," simulations."))
+
+    } else if (sort == "infit") {
+
       item.fit.table %>%
         arrange(desc(`Infit diff`)) %>%
-        kbl_rise(...) %>%
-        kableExtra::footnote(general = paste0("MSQ values based on conditional calculations (n = ", n_complete," complete cases).
-                                Simulation based thresholds from ", actual_iterations," simulated datasets."))
-      
-    } else if(output == "dataframe") {
-      return(janitor::clean_names(item.fit.table))
-      
-    } else if (output == "quarto") {
-      knitr::kable(item.fit.table)
-    }
-  } else if (missing(simcut)) {
-    if (output == "table" & missing(cutoff)) {
-      kbl_rise(item.fit.table, ...) %>%
-        kableExtra::footnote(general = paste0("MSQ values based on conditional estimation (n = ", n_complete," complete cases)."))
-      
-    } else if (output == "table" & cutoff == "Smith98") {
-      # calculate cutoff values for conditional highlighting based on Smith et al, 1998.
-      msq_infit_lo <- round(1 - 2/sqrt(n_complete),3)
-      msq_infit_hi <- round(1 + 2/sqrt(n_complete),3)
-      
-      item.fit.table %>%
-        mutate(InfitMSQ = cell_spec(InfitMSQ, color = ifelse(InfitMSQ < msq_infit_lo, "red",
-                                                             ifelse(InfitMSQ > msq_infit_hi, "red", "black")
-        ))) %>%
-        add_column(!! paste0("1 ","\u00b1"," 2 / ","\u221A","n") := paste0("[",msq_infit_lo,", ", msq_infit_hi,"]")) %>%
-        kbl_rise() %>%
-        kableExtra::footnote(general = paste0("MSQ values based on conditional estimation (n = ", n_complete," complete cases)."))
-    }
-    else if (output == "dataframe") {
-      return(janitor::clean_names(item.fit.table))
-    } else if (output == "quarto") {
-      knitr::kable(item.fit.table)
+        knitr::kable(caption = paste0("Based on ",actual_iterations," simulations."))
+
     }
   }
-}
+  }
