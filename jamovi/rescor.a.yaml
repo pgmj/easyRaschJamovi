@@ -5,6 +5,12 @@ menuGroup: easyRaschJamovi
 version: '1.0.0'
 jas: '1.2'
 
+description:
+    main: |
+        NOTE: this function takes some time to complete the simulations and produce output. 
+        Test with few (50) iterations, and use at least 500 (max 1000) 
+        for publication ready results.
+
 options:
     - name: data
       type: Data
