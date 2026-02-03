@@ -9,7 +9,12 @@ Both functions use parametric bootstrap (simulation) to determine appropriate cu
 
 ## Installation
 
-I think you can just download the package file and run it on your computer: <https://github.com/pgmj/easyRaschJamovi/blob/main/easyRaschJamovi_0.1.0.jmo>
+1. Download the package file: <https://github.com/pgmj/easyRaschJamovi/blob/main/easyRaschJamovi_0.1.0.jmo>
+2. Open Jamovi on your computer
+3. Press the "Modules" button on the upper right corner
+4. Click on "Manage Installed"
+5. Click on "Sideload"
+6. Click the arrow and navigate to the downloaded .jmo file.
 
 ## Author
 
