@@ -1,11 +1,11 @@
 ---
 name: itemfit
-title: Item Fit Analysis
+title: Conditional Item Infit
 jrs: '1.1'
 
 items:
     - name: fitTable
-      title: Item Fit Statistics
+      title: Conditional Item Infit
       type: Table
       rows: (vars)
       columns:
