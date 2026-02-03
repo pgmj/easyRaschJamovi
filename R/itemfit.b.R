@@ -38,7 +38,7 @@ itemfitClass <- R6::R6Class(
                         infitmsq = results$InfitMSQ[i],
                         thresholds = results$`Infit thresholds`[i],
                         infitdiff = results$`Infit diff`[i],
-                        location = results$`Relative location`[i],
+                        location = results$`Relative location`[i]
                     ))
                 }
 
