@@ -50,7 +50,7 @@ RIgetfit <- function(data, iterations = 150, cpu = 4, na.omit = TRUE, seed = NUL
   registerDoParallel(cores = cpu)
 
   if (min(as.matrix(data), na.rm = T) > 0) {
-    stop("The lowest response category needs to coded as 0. Please recode your data.")
+    stop("Variables need to be numeric and the lowest response category coded as 0. Please recode your data.")
   } else if (max(as.matrix(data), na.rm = T) == 1 && min(as.matrix(data), na.rm = T) == 0) {
     # estimate item threshold locations from data
     erm_out <- eRm::RM(data)
