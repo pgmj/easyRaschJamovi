@@ -307,17 +307,6 @@ RIitemfit <- function(data, simcut, sort = "items", cutoff = c(.001,.999)) {
       dplyr::select(!contains(c("lo","hi","min","max"))) %>%
       add_column(`Relative location` = round(relative_item_avg_locations,2))
 
-    if (sort == "items") {
-      # output table
-      item.fit.table %>%
-        knitr::kable(caption = paste0("Based on ",actual_iterations," simulations."))
-
-    } else if (sort == "infit") {
-
-      item.fit.table %>%
-        arrange(desc(`Infit diff`)) %>%
-        knitr::kable(caption = paste0("Based on ",actual_iterations," simulations."))
-
-    }
+    return(item.fit.table)
   }
-  }
+}
