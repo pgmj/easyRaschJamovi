@@ -225,7 +225,7 @@ RIresidcorr <- function(data, cutoff) {
   resid[upper.tri(resid)] <- "" # remove values in upper right triangle to clean up table
   diag(resid) <- "" # same for diagonal
 
-  knitr::kable(resid, caption = paste0("Cutoff = ", round(cutoff_used,4),
-                                       ", based on ",iter," simulations.")
-               )
+  rescor_results <- list(resmat = resid,
+                         cutoff = cutoff_used)
+  return(rescor_results)
 }
