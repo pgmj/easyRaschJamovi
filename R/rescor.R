@@ -29,7 +29,7 @@ RIgetResidCor <- function(data, iterations = 150, cpu = 4, seed = NULL) {
   sample_n <- nrow(data)
 
   if (min(as.matrix(data), na.rm = T) > 0) {
-    stop("The lowest response category needs to coded as 0. Please recode your data.")
+    stop("Variables need to be numeric and the lowest response category coded as 0. Please recode your data.")
   } else if (max(as.matrix(data), na.rm = T) > 1 && min(as.matrix(data), na.rm = T) == 0) {
     # get item threshold locations for response data
     item_locations <- RIitemparams(data, output = "dataframe") %>%
