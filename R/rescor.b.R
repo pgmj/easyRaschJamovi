@@ -32,6 +32,7 @@ rescorClass <- R6::R6Class(
                 resid_results <- RIresidcorr(df, rescor)
                 resid_matrix <- resid_results$resmat
                 cutoff_value <- resid_results$cutoff
+                cutoff_value99 <- resid_results$cutoff99
                 
                 # Set cutoff information as HTML
                 cutoffHtml <- self$results$cutoffText
