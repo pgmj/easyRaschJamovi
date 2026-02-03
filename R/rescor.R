@@ -224,7 +224,7 @@ RIresidcorr <- function(data, cutoff) {
     mutate(across(everything(), ~ round(.x, 3))) %>% 
     rowwise() %>%
     mutate(
-      ld_indicated = case_when(
+      `LD indicated in row` = case_when(
         any(c_across(everything()) > cutoff_used) ~ "x",
         TRUE ~ NA_character_
       )
