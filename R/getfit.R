@@ -202,24 +202,17 @@ RIgetfit <- function(data, iterations = 150, cpu = 4, na.omit = TRUE, seed = NUL
 #' Note: only uses complete cases! This is explicitly mentioned in the automatic
 #' table caption text.
 #'
-#' Cutoff threshold values from simulation data (using option `simcut`) are
-#' used with the `quantile()` function with .001 and .999 values to filter out
-#' extremes. Actual cutoff values are shown in the output.
-#'
 #' Simulated datasets that have zero responses in any response category that
 #' should have data will automatically be removed/skipped from analysis,
 #' which means that final set of iterations may be lower than specified by user.
 #'
-#' Optional sorting (only) for table output with conditional highlighting based
-#' on simulation cutoff values, `sort = "infit"`.
 #'
 #' @param data Dataframe with response data
 #' @param simcut Object output from `RIgetfit()`
 #' @param output Optional "dataframe" or "quarto"
-#' @param sort Optional "infit"
 #' @param cutoff Default `c(.001,.999)`
 #' @export
-RIitemfit <- function(data, simcut, sort = "items", cutoff = c(.001,.999)) {
+RIitemfit <- function(data, simcut, cutoff = c(.001,.999)) {
 
   if(min(as.matrix(data), na.rm = T) > 0) {
     stop("The lowest response category needs to coded as 0. Please recode your data.")
