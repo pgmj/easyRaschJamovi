@@ -32,6 +32,7 @@ options:
       max: 1000
       default: 150
       description:
+        R: Test with few (50) iterations first.
         jamovi: Test with few (50) iterations, and use at least 500 (max 1000) for publication ready results.
 
     - name: cores
