@@ -217,17 +217,29 @@ RIresidcorr <- function(data, cutoff) {
     as.matrix() %>%
     mean(na.rm = TRUE)
 
-  diag(resid) <- 1
+  resid[upper.tri(resid)] <- NA
 
   resid <- resid %>%
     mutate_if(is.character, as.numeric) %>%
-    mutate(across(everything(), ~ round(.x, 3)))
-
-  resid[upper.tri(resid)] <- "" # remove values in upper right triangle to clean up table
-  diag(resid) <- "" # same for diagonal
+    mutate(across(everything(), ~ round(.x, 3))) %>% 
+    rowwise() %>%
+    mutate(
+      ld_indicated = case_when(
+        any(c_across(everything()) > cutoff_used) ~ "x",
+        TRUE ~ NA_character_
+      )
+    ) %>%
+    ungroup()
+  
+  #ld_indicated <- resid$ld_indicated
+  #resid$ld_indicated <- NULL
+  
+  #resid[upper.tri(resid)] <- "" # remove values in upper right triangle to clean up table
+  #diag(resid) <- "" # same for diagonal
 
   rescor_results <- list(resmat = resid,
                          cutoff = cutoff_used,
                          cutoff99 = cutoff_used99)
   return(rescor_results)
 }
+
