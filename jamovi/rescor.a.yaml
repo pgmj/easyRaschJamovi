@@ -30,7 +30,9 @@ options:
       type: Integer
       min: 50
       max: 1000
-      default: 250
+      default: 150
+      description:
+        jamovi: Test with few (50) iterations, and use at least 500 (max 1000) for publication ready results.
 
     - name: cores
       title: CPU Cores
