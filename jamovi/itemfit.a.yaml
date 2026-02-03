@@ -5,6 +5,12 @@ menuGroup: easyRaschJamovi
 version: '1.0.0'
 jas: '1.2'
 
+description:
+    main: |
+        NOTE: this function takes some time to complete the simulations and produce output. 
+        Test with few (100) iterations, and see <https://pgmj.github.io/rasch_itemfit/> for
+        suggestions on appropriate iterations for your sample size.
+
 options:
     - name: data
       type: Data
