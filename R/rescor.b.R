@@ -36,10 +36,13 @@ rescorClass <- R6::R6Class(
                 # Set cutoff information as HTML
                 cutoffHtml <- self$results$cutoffText
                 cutoff_html <- paste0(
-                    "<p><strong>Simulation-based cutoff (99.5th percentile):</strong> ", 
+                    "<p>Simulation-based relative cutoff <strong>(99.5th percentile):</strong> ", 
                     round(cutoff_value, 3), 
                     "</p>",
-                    "<p>Residual correlations above the mean + cutoff value may indicate local dependence.</p>"
+                    "<p>Simulation-based relative cutoff <strong>(99th percentile):</strong> ", 
+                    round(cutoff_value99, 3), 
+                    "</p>",
+                    "<p>Residual correlations above the cutoff value may indicate local dependence.</p>"
                 )
                 cutoffHtml$setContent(cutoff_html)
                 
