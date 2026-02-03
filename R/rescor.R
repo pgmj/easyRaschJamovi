@@ -204,6 +204,7 @@ RIgetResidCor <- function(data, iterations = 150, cpu = 4, seed = NULL) {
 RIresidcorr <- function(data, cutoff) {
 
   cutoff_used <- cutoff$p995
+  cutoff_used99 <- cutoff$p99
   iter <- cutoff$actual_iterations
 
   mirt.rasch <- mirt(data, model = 1, itemtype = "Rasch", verbose = FALSE, accelerate = "squarem") # unidimensional Rasch model
@@ -226,6 +227,7 @@ RIresidcorr <- function(data, cutoff) {
   diag(resid) <- "" # same for diagonal
 
   rescor_results <- list(resmat = resid,
-                         cutoff = cutoff_used)
+                         cutoff = cutoff_used,
+                         cutoff99 = cutoff_used99)
   return(rescor_results)
 }
