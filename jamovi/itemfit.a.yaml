@@ -32,8 +32,7 @@ options:
       max: 1000
       default: 150
       description:
-        jamovi: Test with few (100) iterations, and see <https://pgmj.github.io/rasch_itemfit/> for
-        suggestions on appropriate iterations for your sample size
+        jamovi: Test with few (100) iterations, and see <https://pgmj.github.io/rasch_itemfit/> for suggestions on appropriate iterations for your sample size
 
     - name: cores
       title: CPU Cores
