@@ -1,4 +1,3 @@
-
 #' @export
 rescorClass <- R6::R6Class(
     "rescorClass",
@@ -29,16 +28,45 @@ rescorClass <- R6::R6Class(
                 # Get residual correlation cutoff
                 rescor <- RIgetResidCor(df, iterations = iterations, cpu = cores, seed = seed)
                 
-                # Get the correlation matrix as HTML
-                resid_table <- RIresidcorr(df, rescor)
+                # Get the correlation matrix and cutoff
+                resid_results <- RIresidcorr(df, rescor)
+                resid_matrix <- resid_results$resmat
+                cutoff_value <- resid_results$cutoff
                 
-                # Convert kable object to HTML string
-                html_output <- as.character(resid_table)
+                # Set cutoff information as HTML
+                cutoffHtml <- self$results$cutoffText
+                cutoff_html <- paste0(
+                    "<p><strong>Simulation-based cutoff (99.5th percentile):</strong> ", 
+                    round(cutoff_value, 3), 
+                    "</p>",
+                    "<p>Residual correlations above the mean + cutoff value may indicate local dependence.</p>"
+                )
+                cutoffHtml$setContent(cutoff_html)
                 
-                # Set the HTML content
-                html <- self$results$residcorr
-                html$setContent(html_output)
+                # Get the table object
+                table <- self$results$residcorr
                 
+                # Get item names (column names from the matrix)
+                item_names <- colnames(resid_matrix)
+                
+                # Add columns dynamically based on item names
+                # First column is the row label
+                table$addColumn(name = "rowname", title = "", type = "text")
+                
+                # Add a column for each item
+                for (item in item_names) {
+                    table$addColumn(name = item, title = item, type = "text")
+                }
+                
+                # Add rows with data
+                for (i in seq_len(nrow(resid_matrix))) {
+                    row_values <- list(rowname = item_names[i])
+                    for (j in seq_along(item_names)) {
+                        row_values[[item_names[j]]] <- as.character(resid_matrix[i, j])
+                    }
+                    table$addRow(rowKey = i, values = row_values)
+                }
+
             }, error = function(e) {
                 # Handle errors gracefully
                 stop(paste("Error in residual correlation analysis:", e$message))
