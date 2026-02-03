@@ -1,4 +1,3 @@
-
 #' @export
 itemfitClass <- R6::R6Class(
     "itemfitClass",
@@ -27,7 +26,20 @@ itemfitClass <- R6::R6Class(
             # Run the analysis
             tryCatch({
                 # Get fit statistics using simulations
-                rasch_itemfit(df, iterations = iterations, cores = cores, seed = seed)
+                results <- rasch_itemfit(df, iterations = iterations, cores = cores, seed = seed)
+                
+                # Get the table object
+                table <- self$results$fitTable
+                
+                # Populate the table with results
+                for (i in seq_len(nrow(results))) {
+                    table$setRow(rowNo = i, values = list(
+                        item = results$Item[i],
+                        infitmsq = results$InfitMSQ[i],
+                        location = results$`Relative location`[i],
+                        thresholds = results$`Infit thresholds`[i]
+                    ))
+                }
 
             }, error = function(e) {
                 # Handle errors gracefully
