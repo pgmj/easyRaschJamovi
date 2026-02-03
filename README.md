@@ -2,7 +2,7 @@
 
 This package implements two functions from the [`easyRasch` package](https://pgmj.github.io/easyRasch/):
 
-- Conditional item infit, as implemented in the `iarm` package
+- Conditional item infit, as implemented in the [`iarm` package](https://github.com/muellermarianne/iarm)
 - Residual correlations using Yen's Q3 statistic
 
 Both functions use parametric bootstrap (simulation) to determine appropriate cutoff values for your data. More information about this is available in [my simulation paper](https://pgmj.github.io/rasch_itemfit/).
