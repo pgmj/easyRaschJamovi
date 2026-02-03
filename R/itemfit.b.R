@@ -36,8 +36,9 @@ itemfitClass <- R6::R6Class(
                     table$setRow(rowNo = i, values = list(
                         item = results$Item[i],
                         infitmsq = results$InfitMSQ[i],
+                        thresholds = results$`Infit thresholds`[i],
+                        infitdiff = results$`Infit diff`[i],
                         location = results$`Relative location`[i],
-                        thresholds = results$`Infit thresholds`[i]
                     ))
                 }
 
