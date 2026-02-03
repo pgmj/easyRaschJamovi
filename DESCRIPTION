@@ -1,11 +1,11 @@
 Package: easyRaschJamovi
 Type: Package
-Title: Easy Rasch Analysis for Jamovi
+Title: Rasch Analysis for Jamovi
 Version: 0.1.0
 Date: 2026-02-02
 Author: Magnus Johansson
-Maintainer: Magnus Johansson <magnus.p.johansson@ri.se>
-Description: Provides Rasch analysis functions for Jamovi, including item fit statistics and residual correlations.
+Maintainer: Magnus Johansson <pgmj@pm.me>
+Description: Provides basic Rasch analysis functions for Jamovi, conditional item ifit statistics and residual correlations with simulation based cutoff values.
 License: GPL (>= 3)
 Encoding: UTF-8
 Imports:
@@ -21,9 +21,6 @@ Imports:
     purrr,
     catR,
     psychotools,
-    readxl,
-    readr,
-    kableExtra,
     matrixStats,
     doFuture,
     iarm,
