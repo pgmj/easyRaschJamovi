@@ -1,6 +1,6 @@
 ---
 name: itemfit
-title: Item Fit Analysis
+title: Conditional Item Infit
 menuGroup: easyRaschJamovi
 version: '1.0.0'
 jas: '1.2'
