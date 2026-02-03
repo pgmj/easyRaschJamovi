@@ -15,11 +15,15 @@ items:
           - name: infitmsq
             title: InfitMSQ
             type: number
+            format: zto,pvalue
+          - name: thresholds
+            title: Infit thresholds
+            type: text
+          - name: infitdiff
+            title: Infit diff
+            type: text
           - name: location
             title: Relative location
             type: number
-          - name: thresholds
-            title: Thresholds
-            type: text
 
 ...
