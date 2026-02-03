@@ -13,12 +13,12 @@ description: >
   and Yen's Q3 residual correlations, both using simulation-based methods to determine cutoffs 
   for interpretation (see DOI: 10.61186/emp.2025.5).
 analyses:
-  - title: Item Fit Analysis
+  - title: Conditional Item Infit
     name: itemfit
     ns: easyRaschJamovi
     menuGroup: easyRaschJamovi
     menuTitle: Item Fit Analysis
-  - title: Residual Correlations
+  - title: Residual Correlations (Yen's Q3)
     name: rescor
     ns: easyRaschJamovi
     menuGroup: easyRaschJamovi
