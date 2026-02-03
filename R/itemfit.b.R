@@ -27,7 +27,7 @@ itemfitClass <- R6::R6Class(
             # Run the analysis
             tryCatch({
                 # Get fit statistics using simulations
-                rasch_itemfit(df, iterations = iterations, cpu = cores, seed = seed)
+                rasch_itemfit(df, iterations = iterations, cores = cores, seed = seed)
 
             }, error = function(e) {
                 # Handle errors gracefully
