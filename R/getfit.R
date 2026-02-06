@@ -62,12 +62,8 @@ RIgetfit <- function(data, iterations = 150, cpu = 4, na.omit = TRUE, seed = NUL
     names(item_locations) <- names(data)
 
     # estimate theta values from data using WLE
-    if (na.omit == TRUE) {
-      thetas <- RIestThetas(data)$WLE
-    } else {
-      mirt_out <- mirt(data, itemtype = "Rasch", verbose = FALSE)
-      thetas <- mirt::fscores(mirt_out, method = "WLE", verbose = FALSE)
-    }
+    mirt_out <- mirt(data, itemtype = "Rasch", verbose = FALSE)
+    thetas <- mirt::fscores(mirt_out, method = "WLE", verbose = FALSE)
 
     fitstats <- list()
     #registerDoRNG(seeds[17])
