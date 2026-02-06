@@ -23,6 +23,10 @@ analyses:
     ns: easyRaschJamovi
     menuGroup: easyRaschJamovi
     menuTitle: Residual Correlations
+datasets:
+  - name: pcmdat2
+    path: eRm_pcmdat2.csv
+    description: Polytomous dataset
 usesNative: false
 minApp: 1.0.8
 
