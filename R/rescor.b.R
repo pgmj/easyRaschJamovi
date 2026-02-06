@@ -9,14 +9,19 @@ rescorClass <- R6::R6Class(
             if (is.null(self$options$vars) || length(self$options$vars) == 0)
                 return()
             
-            data <- self$data
-            vars <- self$options$vars
-            iterations <- self$options$iterations
-            cores <- self$options$cores
-            seed <- self$options$seed
-            
-            # Select only the specified variables
-            df <- data[, vars]
+          # Check minimum number of variables
+          if (length(self$options$vars) < 2) {
+            stop("You need at least two variables to run an analysis.")
+          }
+
+          data <- self$data
+          vars <- self$options$vars
+          iterations <- self$options$iterations
+          cores <- self$options$cores
+          seed <- self$options$seed
+
+          # Select only the specified variables (drop = FALSE keeps it as dataframe)
+          df <- data[, vars, drop = FALSE]
             
             # Convert to numeric if needed
             for (col in names(df)) {
