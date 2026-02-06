@@ -26,7 +26,10 @@ analyses:
 datasets:
   - name: pcmdat2
     path: eRm_pcmdat2.csv
-    description: Polytomous dataset
+    description: Polytomous dataset from eRm
+  - name: raschdat3
+    path: eRm_raschdat3.csv
+    description: Dichotomous dataset from eRm
 usesNative: false
 minApp: 1.0.8
 
