@@ -49,6 +49,10 @@ RIgetfit <- function(data, iterations = 150, cpu = 4, na.omit = TRUE, seed = NUL
 
   registerDoParallel(cores = cpu)
 
+    if (is.null(ncol(data)) || ncol(data) < 2) {
+    stop("You need at least two variables to run an analysis.")
+  }
+
   if (min(as.matrix(data), na.rm = T) > 0) {
     stop("Variables need to be numeric and the lowest response category coded as 0. Please recode your data.")
   } else if (max(as.matrix(data), na.rm = T) == 1 && min(as.matrix(data), na.rm = T) == 0) {
