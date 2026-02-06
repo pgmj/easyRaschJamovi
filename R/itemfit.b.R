@@ -80,7 +80,7 @@ itemfitClass <- R6::R6Class(
       # Check minimum response category coding (must start at 0)
       min_val <- min(as.matrix(df), na.rm = TRUE)
       if (min_val > 0) {
-        stop("The lowest response category must be coded as 0. Please recode your data.")
+        stop("Variables/items need to be continuous (numeric integers) and the lowest response category must be coded as 0. Please recode your data.")
       }
       if (min_val < 0) {
         stop("Response categories cannot be negative. Please recode your data.")
