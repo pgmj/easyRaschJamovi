@@ -23,9 +23,14 @@ rescorClass <- R6::R6Class(
       # Select only the specified variables (drop = FALSE keeps it as dataframe)
       df <- data[, vars, drop = FALSE]
 
-      # Convert to numeric if needed
+      # Convert to numeric - handle factors properly
       for (col in names(df)) {
-        df[[col]] <- as.numeric(df[[col]])
+        if (is.factor(df[[col]])) {
+          # For factors, convert via character to preserve actual values
+          df[[col]] <- as.numeric(as.character(df[[col]]))
+        } else {
+          df[[col]] <- as.numeric(df[[col]])
+        }
       }
 
       # Check for duplicate/identical variables using correlation
