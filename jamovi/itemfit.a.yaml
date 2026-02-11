@@ -1,7 +1,7 @@
 ---
 name: itemfit
 title: Conditional Item Infit
-menuGroup: easyRaschJamovi
+menuGroup: easyRasch
 version: '1.0.0'
 jas: '1.2'
 
