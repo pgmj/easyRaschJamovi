@@ -9,19 +9,20 @@ maintainer: Magnus Johansson <pgmj@pm.me>
 date: '2026-02-02'
 type: R
 description: >
-  Provides two basic Rasch analysis functions for Jamovi. Conditional item infit statistics
-  and Yen's Q3 residual correlations, both using simulation-based methods to determine cutoffs 
+  Provides two basic Rasch analysis functions for Jamovi from the easyRasch R package: 
+  Conditional item infit statistics and Yen's Q3 residual correlations, 
+  both using simulation-based methods to determine cutoffs 
   for interpretation (see DOI: 10.61186/emp.2025.5).
 analyses:
   - title: Conditional Item Infit
     name: itemfit
-    ns: easyRaschJamovi
-    menuGroup: easyRaschJamovi
+    ns: easyRasch
+    menuGroup: easyRasch
     menuTitle: Item Fit Analysis
   - title: Residual Correlations (Yen's Q3)
     name: rescor
-    ns: easyRaschJamovi
-    menuGroup: easyRaschJamovi
+    ns: easyRasch
+    menuGroup: easyRasch
     menuTitle: Residual Correlations
 datasets:
   - name: pcmdat2
