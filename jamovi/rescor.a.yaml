@@ -1,7 +1,7 @@
 ---
 name: rescor
 title: Residual Correlations (Yen's Q3)
-menuGroup: easyRaschJamovi
+menuGroup: easyRasch
 version: '1.0.0'
 jas: '1.2'
 
